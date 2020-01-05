@@ -4,55 +4,40 @@ import time
 IN1 = 0
 IN2 = 1
 PWM = 2
+STB = 3
 
-M1 = [11, 13, 15]
-M2 = [29, 31, 33]
-M3 = [12, 16, 18]
-M4 = [22, 24, 26]
+M1 = [11, 13, 15, 21]
+M2 = [29, 31, 33, 21]
+M3 = [12, 16, 18, 22]
+M4 = [36, 38, 40, 22]
 
-STANBY = [19, 32]
-
-SPEED = 100
+SPEED = 500
 START = 50
 
-def setupPin(motors, standby):
-    # Pin Setup
+# Pin Setup
+def setupPin(motors):
     for motor in motors:
         for pin in motor:
             GPIO.setup(pin, GPIO.OUT)
-    # Stanby Pin On            
-    for pin in standby:
-        GPIO.output(pin, GPIO.HIGH)
 
-def forward(motors, second):
+# Move
+def move(motors, second, direction):
     for motor in motors:
-        GPIO.output(motor[IN1], GPIO.HIGH)
-        GPIO.output(motor[IN2], GPIO.LOW)
-        GPIO.output(motor[PWM], GPIO.LOW)        
-    time.sleep(second)
-
-def backward(motors, second):
-    for motor in motors:
-        GPIO.output(motor[IN1], GPIO.LOW)
-        GPIO.output(motor[IN2], GPIO.HIGH)
-        GPIO.output(motor[PWM], GPIO.LOW)        
+        GPIO.output(motor[STB], GPIO.HIGH)
+        GPIO.output(motor[IN1], direction)
+        GPIO.output(motor[IN2], not direction)
+        # GPIO.output(motor[PWM], direction)
     time.sleep(second)
 
 def stopMotors(motors, second):
     for motor in motors:
-        for pin in motor:
-            if (pin == PWM):
-                GPIO.output(pin, GPIO.HIGH)
-            else:
-                GPIO.output(pin, GPIO.LOW)
+        GPIO.output(motor[STB], GPIO.LOW)
     time.sleep(second)
 
 GPIO.setmode(GPIO.BOARD)
 
 # Setup Pins
-setupPin([M1, M2, M3, M4, STANBY], STANBY)
-GPIO.output(19, GPIO.HIGH)
-GPIO.output(31, GPIO.HIGH)
+setupPin([M1, M2, M3, M4])
 
 # PWM SETUP
 p1 = GPIO.PWM(M1[PWM], SPEED)
@@ -65,11 +50,11 @@ p4 = GPIO.PWM(M4[PWM], SPEED)
 p4.start(START)
 
 print "Forward"
-forward([M1, M2, M3, M4], 3)
+move([M1, M2, M3, M4], 2, True)
 print "Backward"
-stopMotors([M1, M2, M3, M4], 2)
+stopMotors([M1, M2, M3, M4], 3)
 
-backward([M1, M2, M3, M4], 3)
+move([M1, M2, M3, M4], 2, False)
 print "Stop"
 
 p1.stop()
