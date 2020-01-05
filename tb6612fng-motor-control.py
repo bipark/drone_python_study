@@ -7,13 +7,13 @@ PWM = 2
 
 M1 = [11, 13, 15]
 M2 = [29, 31, 33]
-M3 = [21, 23, 24]
-M4 = [36, 38, 40]
+M3 = [12, 16, 18]
+M4 = [22, 24, 26]
 
 STANBY = [19, 32]
 
-SPEED = 255
-START = 10
+SPEED = 100
+START = 50
 
 def setupPin(motors, standby):
     # Pin Setup
@@ -28,14 +28,14 @@ def forward(motors, second):
     for motor in motors:
         GPIO.output(motor[IN1], GPIO.HIGH)
         GPIO.output(motor[IN2], GPIO.LOW)
-        #GPIO.output(motor[PWM], GPIO.LOW)        
+        GPIO.output(motor[PWM], GPIO.LOW)        
     time.sleep(second)
 
 def backward(motors, second):
     for motor in motors:
         GPIO.output(motor[IN1], GPIO.LOW)
         GPIO.output(motor[IN2], GPIO.HIGH)
-        #GPIO.output(motor[PWM], GPIO.LOW)        
+        GPIO.output(motor[PWM], GPIO.LOW)        
     time.sleep(second)
 
 def stopMotors(motors, second):
@@ -51,8 +51,8 @@ GPIO.setmode(GPIO.BOARD)
 
 # Setup Pins
 setupPin([M1, M2, M3, M4, STANBY], STANBY)
-# GPIO.output(19, GPIO.HIGH)
-# GPIO.output(32, GPIO.HIGH)
+GPIO.output(19, GPIO.HIGH)
+GPIO.output(31, GPIO.HIGH)
 
 # PWM SETUP
 p1 = GPIO.PWM(M1[PWM], SPEED)
