@@ -2,10 +2,10 @@ import RPi.GPIO as GPIO
 import time
 
 GPIO.setmode(GPIO.BOARD)
-GPIO_RP = 11
-GPIO_RN = 13
-GPIO_EN = 15
-GPIO_ST = 19
+GPIO_RP = 3
+GPIO_RN = 5
+GPIO_EN = 7
+GPIO_ST = 11
 
 # GPIO_RP = 29
 # GPIO_RN = 31
@@ -39,7 +39,7 @@ try:
         GPIO.output(GPIO_ST, True)
         GPIO.output(GPIO_RP, False)
         GPIO.output(GPIO_RN, True)
-        GPIO.output(GPIO_EN, True)
+        # GPIO.output(GPIO_EN, True)
         setSpeed(i, p)            
         time.sleep(1)
 finally:
