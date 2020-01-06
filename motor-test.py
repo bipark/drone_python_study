@@ -26,7 +26,7 @@ GPIO.setup(GPIO_RP, GPIO.OUT)
 GPIO.setup(GPIO_RN, GPIO.OUT)
 GPIO.setup(GPIO_EN, GPIO.OUT)
 GPIO.setup(GPIO_ST, GPIO.OUT)
-GPIO.output(GPIO_ST, True)
+GPIO.output(GPIO_ST, GPIO.HIGH)
 
 def setSpeed(speed,p):
     p.ChangeDutyCycle(speed*10)
