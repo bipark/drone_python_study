@@ -6,38 +6,37 @@ IN2 = 1
 PWM = 2
 STB = 3
 
-# 3, 5, 7, 11
-# 11, 13, 19, 21 
+# 7, 11, 13
+# 19, 21, 23
+# 16, 22, 24 
 # 23, 29, 31
-# 16, 22, 24, 26, 32, 
+# 26, 32, 
 
-#M1 = [11, 13, 15, 19]
-M1 = [3, 5, 7, 11]
-M2 = [29, 31, 33, 19]
-M3 = [12, 16, 18, 22]
-M4 = [36, 38, 40, 22]
+M1 = [7, 11, 13, 26]
+M2 = [19, 21, 23, 26]
+M3 = [16, 22, 24, 32]
+M4 = [3, 5, 31, 32]
 
-SPEED = 50
-START = 50
+SPEED = 10
+START = 10
 
 # Pin Setup
 def setupPin(motors):
     for motor in motors:
         for pin in motor:
-            GPIO.setup(pin, GPIO.OUT)
+            GPIO.setup(pin, GPIO.OUT, initial=GPIO.LOW)
 
 # Move
-def move(motors, second, direction):
+def move(motors, direction):
     for motor in motors:
-        GPIO.output(motor[STB], GPIO.HIGH)
+        GPIO.output(motor[STB], True)
         GPIO.output(motor[IN1], direction)
         GPIO.output(motor[IN2], not direction)
         # GPIO.output(motor[PWM], direction)
-    time.sleep(second)
 
-def changeStatus(motors, status):
-    for motor in motors:
-        GPIO.output(motor[STB], status)
+def stopMotors():
+    GPIO.output(11, False)
+
 
 try: 
     GPIO.setmode(GPIO.BOARD)
@@ -55,15 +54,16 @@ try:
     p4 = GPIO.PWM(M4[PWM], SPEED)
     p4.start(START)
 
-
-    changeStatus([M1, M2, M3, M4], GPIO.HIGH)
     print "Forward"
-    move([M1, M2, M3, M4], 2, True)
-    print "Backward"
-    # changeStatus([M1, M2, M3, M4], GPIO.LOW)
+    move([M1, M2, M3, M4], True)
+    time.sleep(3)
 
-    move([M1, M2, M3, M4], 2, False)
+    print "Backward"
+    move([M1, M2, M3, M4], False)
+    
+    time.sleep(2)
     print "Stop"
+    stopMotors()
 
     p1.stop()
     p2.stop()

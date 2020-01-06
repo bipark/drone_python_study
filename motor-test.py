@@ -2,9 +2,9 @@ import RPi.GPIO as GPIO
 import time
 
 GPIO.setmode(GPIO.BOARD)
-GPIO_RP = 3
-GPIO_RN = 5
-GPIO_EN = 7
+GPIO_RP = 13
+GPIO_RN = 19
+GPIO_EN = 21
 GPIO_ST = 11
 
 # GPIO_RP = 29
