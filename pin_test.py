@@ -5,7 +5,7 @@ GPIO.setmode(GPIO.BOARD)
 
 # 7, 11, 13, 19, 21, 23, 29, 31
 # 16, 22, 24, 26, 32, 
-Pin = 7
+Pin = 23
 
 GPIO.setup(Pin, GPIO.OUT)
 GPIO.output(Pin, True)
